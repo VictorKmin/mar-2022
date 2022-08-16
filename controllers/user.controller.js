@@ -1,4 +1,5 @@
-const fileService = require("../services/file.service");
+const fileService = require('../services/file.service');
+const { statusCodes } = require('../constants');
 
 module.exports = {
   getAllUsers: async (req, res) => {
@@ -9,21 +10,21 @@ module.exports = {
   createUser: async (req, res) => {
     const user = await fileService.insertUser(req.body);
 
-    res.status(201).json(user);
+    res.status(statusCodes.CREATE).json(user);
   },
 
   getUserById: async (req, res) => {
     const { userId } = req.params;
 
     if (Number.isNaN(+userId) || +userId < 0) {
-      res.status(400).json('Wrong user id');
+      res.status(statusCodes.BAD_REQUEST).json('Wrong user id');
       return;
     }
 
     const user = await fileService.getOneUser(+userId);
 
     if (!user) {
-      res.status(404).json('User not found');
+      res.status(statusCodes.NOT_FOUND).json('User not found');
       return;
     }
 
@@ -35,7 +36,7 @@ module.exports = {
     const { age, name } = req.body;
 
     if (Number.isNaN(+userId) || +userId < 0) {
-      res.status(400).json('Wrong user id');
+      res.status(statusCodes.BAD_REQUEST).json('Wrong user id');
       return;
     }
 
@@ -46,46 +47,28 @@ module.exports = {
     const user = await fileService.updateUser(+userId, userObject);
 
     if (!user) {
-      res.status(404).json('User not found');
+      res.status(statusCodes.NOT_FOUND).json('User not found');
       return;
     }
 
-    res.status(201).json(user);
+    res.status(statusCodes.CREATE).json(user);
   },
 
   deleteUserByID: async (req, res) => {
     const { userId } = req.params;
 
     if (Number.isNaN(+userId) || +userId < 0) {
-      res.status(400).json('Wrong user id');
+      res.status(statusCodes.BAD_REQUEST).json('Wrong user id');
       return;
     }
 
     const user = await fileService.deleteOneUser(+userId);
 
     if (!user) {
-      res.status(404).json('User not found');
+      res.status(statusCodes.NOT_FOUND).json('User not found');
       return;
     }
 
-    res.sendStatus(204);
+    res.sendStatus(statusCodes.NO_CONTENT);
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
