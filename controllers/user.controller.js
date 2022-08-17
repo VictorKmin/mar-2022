@@ -1,74 +1,65 @@
-const fileService = require('../services/file.service');
 const { statusCodes } = require('../constants');
+const User = require("../dataBase/User");
+const { ApiError } = require('../errors');
+const { userService } = require("../services");
 
 module.exports = {
-  getAllUsers: async (req, res) => {
-    const usersFromService = await fileService.getUsers();
-    res.json(usersFromService);
+  getAllUsers: async (req, res, next) => {
+    try {
+      const usersFromService = await User.find();
+      res.json(usersFromService);
+    } catch (e) {
+      next(e);
+    }
   },
 
-  createUser: async (req, res) => {
-    const user = await fileService.insertUser(req.body);
+  createUser: async (req, res, next) => {
+    try {
+      const user = await userService.createUser(req.body);
 
-    res.status(statusCodes.CREATE).json(user);
+      res.status(statusCodes.CREATE).json(user);
+    } catch (e) {
+      next(e);
+    }
   },
 
-  getUserById: async (req, res) => {
-    const { userId } = req.params;
+  getUserById: async (req, res, next) => {
+    try {
+      const { userId } = req.params;
 
-    if (Number.isNaN(+userId) || +userId < 0) {
-      res.status(statusCodes.BAD_REQUEST).json('Wrong user id');
-      return;
+      const user = await User.findById(userId);
+
+      if (!user) {
+        throw new ApiError('User not found', statusCodes.NOT_FOUND);
+      }
+
+      res.json(user);
+    } catch (e) {
+      next(e);
     }
-
-    const user = await fileService.getOneUser(+userId);
-
-    if (!user) {
-      res.status(statusCodes.NOT_FOUND).json('User not found');
-      return;
-    }
-
-    res.json(user);
   },
 
-  updateUserById: async (req, res) => {
-    const { userId } = req.params;
-    const { age, name } = req.body;
+  updateUserById: async (req, res, next) => {
+    try {
+      const { userId } = req.params;
 
-    if (Number.isNaN(+userId) || +userId < 0) {
-      res.status(statusCodes.BAD_REQUEST).json('Wrong user id');
-      return;
+      const user = await userService.updateUserById(userId, req.body);
+
+      res.json(user);
+    } catch (e) {
+      next(e);
     }
-
-    const userObject = {};
-    if (age) userObject.age = age;
-    if (name) userObject.name = name;
-
-    const user = await fileService.updateUser(+userId, userObject);
-
-    if (!user) {
-      res.status(statusCodes.NOT_FOUND).json('User not found');
-      return;
-    }
-
-    res.status(statusCodes.CREATE).json(user);
   },
 
-  deleteUserByID: async (req, res) => {
-    const { userId } = req.params;
+  deleteUserByID: async (req, res, next) => {
+    try {
+      const { userId } = req.params;
 
-    if (Number.isNaN(+userId) || +userId < 0) {
-      res.status(statusCodes.BAD_REQUEST).json('Wrong user id');
-      return;
+      await userService.deleteUserById(userId);
+
+      res.sendStatus(statusCodes.NO_CONTENT);
+    } catch (e) {
+      next(e);
     }
-
-    const user = await fileService.deleteOneUser(+userId);
-
-    if (!user) {
-      res.status(statusCodes.NOT_FOUND).json('User not found');
-      return;
-    }
-
-    res.sendStatus(statusCodes.NO_CONTENT);
   }
 }

@@ -1,19 +1,22 @@
-const { statusCodes } = require('../constants');
+const { ApiError } = require('../errors');
+const { BAD_REQUEST } = require("../constants/statusCode.enum");
 
 module.exports = {
   checkIsUserBodyValid: async (req, res, next) => {
-    const { age, name } = req.body;
+    try {
+      const { age, name } = req.body;
 
-    if (Number.isNaN(+age) || age <= 0) {
-      res.status(statusCodes.BAD_REQUEST).json('Wrong user age');
-      return;
+      if (Number.isNaN(+age) || age <= 0) {
+        throw new ApiError('Wrong user age', BAD_REQUEST);
+      }
+
+      if (name.length < 2) {
+        throw new ApiError('Wrong user name', BAD_REQUEST);
+      }
+
+      next();
+    } catch (e) {
+      next(e);
     }
-
-    if (name.length < 2) {
-      res.status(statusCodes.BAD_REQUEST).json('Wrong user name');
-      return;
-    }
-
-    next();
   }
 }
