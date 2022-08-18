@@ -1,13 +1,13 @@
 const { statusCodes } = require('../constants');
-const User = require("../dataBase/User");
-const { ApiError } = require('../errors');
+
 const { userService } = require("../services");
 
 module.exports = {
   getAllUsers: async (req, res, next) => {
     try {
-      const usersFromService = await User.find();
-      res.json(usersFromService);
+      const users = await userService.getAllUsers();
+
+      res.json(users);
     } catch (e) {
       next(e);
     }
@@ -25,13 +25,7 @@ module.exports = {
 
   getUserById: async (req, res, next) => {
     try {
-      const { userId } = req.params;
-
-      const user = await User.findById(userId);
-
-      if (!user) {
-        throw new ApiError('User not found', statusCodes.NOT_FOUND);
-      }
+      const { user } = req;
 
       res.json(user);
     } catch (e) {
