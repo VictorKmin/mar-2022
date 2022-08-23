@@ -60,13 +60,8 @@ module.exports = {
 
   getUserDynamicaly: (from = 'body', filedName = 'userId', dbField = filedName) => {
     return async function (req, res, next) {
-      console.log(from, 'FROM')
-      console.log(filedName, 'filedName')
-      console.log(dbField, 'dbField')
       try {
         const filedToSearch = req[from][filedName];
-
-        console.log(filedToSearch, 'filedToSearch');
 
         const user = await User.findOne({ [dbField]: filedToSearch })
 
