@@ -12,6 +12,12 @@ authRouter.post(
 );
 
 authRouter.post(
+  '/logout',
+  authMdlwr.checkIsAccessToken,
+  authController.logout
+);
+
+authRouter.post(
   '/refresh',
     authMdlwr.checkIsRefreshToken,
     authController.refresh
