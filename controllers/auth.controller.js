@@ -1,5 +1,5 @@
-const { authService, tokenService } = require("../services");
-const { NO_CONTENT } = require("../constants/statusCode.enum");
+const { authService, tokenService } = require('../services');
+const { NO_CONTENT } = require('../constants/statusCode.enum');
 
 module.exports = {
   login: async (req, res, next) => {
@@ -49,4 +49,4 @@ module.exports = {
       next(e);
     }
   }
-}
+};

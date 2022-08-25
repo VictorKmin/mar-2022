@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const { ApiError } = require("../errors");
+const { ApiError } = require('../errors');
 const { statusCodes, tokenTypeEnum } = require('../constants');
 const {
   ACCESS_SECRET_WORD,
@@ -27,19 +27,19 @@ module.exports = {
     return {
       access_token,
       refresh_token
-    }
+    };
   },
 
   checkToken: (token, tokenType = tokenTypeEnum.ACCESS) => {
     try {
       let word;
 
-      if (tokenType === tokenTypeEnum.ACCESS) word = ACCESS_SECRET_WORD;
-      if (tokenType === tokenTypeEnum.REFRESH) word = REFRESH_SECRET_WORD;
+      if (tokenType === tokenTypeEnum.ACCESS) {word = ACCESS_SECRET_WORD;}
+      if (tokenType === tokenTypeEnum.REFRESH) {word = REFRESH_SECRET_WORD;}
 
       return jwt.verify(token, word);
     } catch (e) {
       throw new ApiError('Token not valid', statusCodes.UNAUTHORIZED);
     }
   },
-}
+};

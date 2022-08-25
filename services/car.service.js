@@ -9,6 +9,10 @@ module.exports = {
     return Car.findOne(filter);
   },
 
+  getCarsByParams(filter) {
+    return Car.find(filter);
+  },
+
   getOneById(id) {
     return Car.findById(id).populate('user');
   },
@@ -20,4 +24,4 @@ module.exports = {
   deleteCarById(carId) {
     return Car.deleteOne({ _id: carId });
   }
-}
+};

@@ -1,6 +1,6 @@
 const { statusCodes } = require('../constants');
 
-const { tokenService, userService } = require("../services");
+const { tokenService, userService } = require('../services');
 
 module.exports = {
   getAllUsers: async (req, res, next) => {
@@ -24,7 +24,7 @@ module.exports = {
     }
   },
 
-  getUserById: async (req, res, next) => {
+  getUserById: (req, res, next) => {
     try {
       const { user } = req;
 
@@ -57,4 +57,4 @@ module.exports = {
       next(e);
     }
   }
-}
+};
