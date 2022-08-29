@@ -1,39 +1,38 @@
 const { Router } = require('express');
 
 const { carController } = require('../controllers');
-const { commonMdlwr, carMdlwr, userMdlwr, authMdlwr } = require('../middlewares');
+const { commonMdlwr, carMdlwr, authMdlwr } = require('../middlewares');
+const { newCarValidator, updateCarValidator } = require('../validators/car.validators');
 
 const carRouter = Router();
 
 carRouter.post(
-    '/',
-    commonMdlwr.checkIsIdValid('userId', 'query'),
-    carMdlwr.checkIsCarBodyValid,
-    authMdlwr.checkIsAccessToken,
-    userMdlwr.isUserPresent('query'),
-    carController.createCar
+  '/',
+  commonMdlwr.checkIsBodyValid(newCarValidator),
+  authMdlwr.checkIsAccessToken,
+  carController.createCar
 );
 
 carRouter.get(
-    '/:carId',
-    commonMdlwr.checkIsIdValid('carId'),
-    carMdlwr.isCarPresent,
-    carController.getCarById
+  '/:carId',
+  commonMdlwr.checkIsIdValid('carId'),
+  carMdlwr.isCarPresent,
+  carController.getCarById
 );
 carRouter.put(
-    '/:carId',
-    commonMdlwr.checkIsIdValid('carId'),
-    //TODO validation body
-    authMdlwr.checkIsAccessToken,
-    carMdlwr.isCarPresent,
-    carController.updateCarById
+  '/:carId',
+  commonMdlwr.checkIsIdValid('carId'),
+  commonMdlwr.checkIsBodyValid(updateCarValidator),
+  authMdlwr.checkIsAccessToken,
+  carMdlwr.isCarPresent,
+  carController.updateCarById
 );
 carRouter.delete(
-    '/:carId',
-    commonMdlwr.checkIsIdValid('carId'),
-    authMdlwr.checkIsAccessToken,
-    carMdlwr.isCarPresent,
-    carController.deleteCarByID
+  '/:carId',
+  commonMdlwr.checkIsIdValid('carId'),
+  authMdlwr.checkIsAccessToken,
+  carMdlwr.isCarPresent,
+  carController.deleteCarByID
 );
 
 module.exports = carRouter;

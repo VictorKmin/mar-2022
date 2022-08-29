@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 const { PORT, MONGO_URL } = require('./configs/config');
 const { authRouter, carRouter, userRouter } = require('./routes');
-const { mainErrorHandler } = require("./errors");
+const { mainErrorHandler } = require('./errors');
 
 const app = express();
 
@@ -22,6 +22,7 @@ app.use('*', (req, res, next) => {
 app.use(mainErrorHandler);
 
 app.listen(PORT, () => {
+  // eslint-disable-next-line no-console
   console.log('App listen', PORT);
   mongoose.connect(MONGO_URL);
 });

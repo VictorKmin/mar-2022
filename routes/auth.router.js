@@ -1,12 +1,14 @@
 const { Router } = require('express');
 
 const { authController } = require('../controllers');
-const { userMdlwr, authMdlwr } = require('../middlewares');
+const { userMdlwr, authMdlwr, commonMdlwr } = require('../middlewares');
+const { loginUserValidator } = require('../validators/user.validators');
 
 const authRouter = Router();
 
 authRouter.post(
   '/login',
+  commonMdlwr.checkIsBodyValid(loginUserValidator),
   userMdlwr.getUserDynamicaly('body', 'email'),
   authController.login
 );
@@ -19,8 +21,8 @@ authRouter.post(
 
 authRouter.post(
   '/refresh',
-    authMdlwr.checkIsRefreshToken,
-    authController.refresh
+  authMdlwr.checkIsRefreshToken,
+  authController.refresh
 );
 
 module.exports = authRouter;
