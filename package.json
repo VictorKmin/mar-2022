@@ -21,14 +21,18 @@
   "dependencies": {
     "bcrypt": "^5.0.1",
     "dotenv": "^16.0.1",
+    "email-templates": "^10.0.1",
     "express": "^4.18.1",
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.5.2"
+    "mongoose": "^6.5.2",
+    "nodemailer": "^6.7.8",
+    "pug": "^3.0.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.19",
     "eslint": "^8.22.0",
-    "eslint-plugin-node": "^11.1.0"
+    "eslint-plugin-node": "^11.1.0",
+    "@types/nodemailer": "^6.4.5"
   }
 }
