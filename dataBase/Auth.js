@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const carSchema = new Schema({
+const authSchema = new Schema({
   access_token: { type: String, required: true },
   refresh_token: { type: String, required: true },
   user: {
@@ -12,4 +12,4 @@ const carSchema = new Schema({
   versionKey: false
 });
 
-module.exports = model('auth', carSchema);
+module.exports = model('auth', authSchema);

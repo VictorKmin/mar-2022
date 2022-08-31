@@ -1,4 +1,6 @@
 module.exports = {
   ACCESS: 'access',
-  REFRESH: 'refresh'
+  REFRESH: 'refresh',
+
+  FORGOT_PASSWORD: 'forgot_pass'
 };

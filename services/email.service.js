@@ -1,10 +1,10 @@
 const nodemailer = require('nodemailer');
 const EmailTemplates = require('email-templates');
-const path = require("path");
+const path = require('path');
 
-const { NO_REPLY_EMAIL, NO_REPLY_PASSWORD, FRONTEND_URL } = require("../configs/config");
-const emailTemplatesObj = require("../email-templates");
-const ApiError = require("../errors/ApiError");
+const { NO_REPLY_EMAIL, NO_REPLY_PASSWORD, FRONTEND_URL } = require('../configs/config');
+const emailTemplatesObj = require('../email-templates');
+const ApiError = require('../errors/ApiError');
 
 const sendEmail = async (userMail, emailAction, locals = {}) => {
   const transporter = nodemailer.createTransport({
@@ -34,9 +34,9 @@ const sendEmail = async (userMail, emailAction, locals = {}) => {
     to: userMail,
     subject: emailInfo.subject,
     html
-  })
-}
+  });
+};
 
 module.exports = {
   sendEmail
-}
+};

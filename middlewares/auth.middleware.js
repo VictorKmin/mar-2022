@@ -1,6 +1,6 @@
 const { ApiError } = require('../errors');
 const { statusCodes, constant, tokenTypeEnum } = require('../constants');
-const { authService, tokenService } = require('../services');
+const { authService, tokenService, actionTokenService } = require('../services');
 
 module.exports = {
   checkIsAccessToken: async (req, res, next) => {
@@ -48,4 +48,27 @@ module.exports = {
       next(e);
     }
   },
+
+  checkActionToken: (tokenType) => async (req, res, next) => {
+    try {
+      const token = req.get(constant.AUTHORIZATION);
+
+      if (!token) {
+        return next(new ApiError('No token', statusCodes.UNAUTHORIZED));
+      }
+
+      tokenService.checkToken(token, tokenType);
+
+      const tokenInfo = await actionTokenService.getOneByParamsWithUser({ tokenType, token });
+
+      if (!tokenInfo) {
+        return next(new ApiError('Not valid token', statusCodes.UNAUTHORIZED));
+      }
+
+      req.tokenInfo = tokenInfo;
+      next();
+    } catch (e) {
+      next(e);
+    }
+  }
 };

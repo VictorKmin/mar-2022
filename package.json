@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.19",
-    "eslint": "^8.22.0",
+    "eslint": "8.22.0",
     "eslint-plugin-node": "^11.1.0",
     "@types/nodemailer": "^6.4.5"
   }
