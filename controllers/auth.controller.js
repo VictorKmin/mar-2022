@@ -1,6 +1,13 @@
-const { authService, tokenService, emailService, actionTokenService, userService } = require('../services');
-const { statusCodes: { NO_CONTENT }, emailActionEnum, tokenTypeEnum, constant } = require('../constants');
 const { FRONTEND_URL } = require('../configs/config');
+const { statusCodes: { NO_CONTENT }, emailActionEnum, tokenTypeEnum, constant } = require('../constants');
+const {
+  authService,
+  tokenService,
+  emailService,
+  actionTokenService,
+  userService,
+  previousPasswordService
+} = require('../services');
 
 module.exports = {
   login: async (req, res, next) => {
@@ -79,6 +86,8 @@ module.exports = {
       const { user } = req.tokenInfo;
       const { password } = req.body;
       const token = req.get(constant.AUTHORIZATION);
+
+      await previousPasswordService.savePasswordInfo({ password: user.password, user: user._id });
 
       await authService.deleteMany({ user: user._id });
       await actionTokenService.deleteOne({ token });
