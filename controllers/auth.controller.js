@@ -13,15 +13,13 @@ module.exports = {
   login: async (req, res, next) => {
     try {
       const { password, email } = req.body;
-      const { password: hashPassword, _id } = req.user;
+      const { _id } = req.user;
 
-      await tokenService.comparePasswords(password, hashPassword);
+      await req.user.checkIsPasswordSame(password);
 
       const authTokens = tokenService.createAuthTokens({ _id });
 
       await authService.saveTokens({ ...authTokens, user: _id });
-
-      // await sendEmail(email, emailActionEnum.WELCOME, { userName: name });
       await emailService.sendEmail(email, emailActionEnum.FORGOT_PASSWORD);
 
       res.json({
