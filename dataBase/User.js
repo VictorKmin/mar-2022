@@ -7,6 +7,7 @@ const userSchema = new Schema({
   age: { type: Number, default: 18 },
   email: { type: String, trim: true, lowercase: true, required: true, unique: true },
   password: { type: String, required: true },
+  avatar: { type: String, default: '' },
   cars: {
     type: [Schema.Types.ObjectId],
     ref: 'car',
