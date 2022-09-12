@@ -17,7 +17,6 @@ userRouter.post(
 userRouter.get(
   '/:userId',
   commonMdlwr.checkIsIdValid('userId'),
-  fileMdlwr.checkUploadedAvatar,
   userMdlwr.isUserPresent(),
   userController.getUserById
 );
@@ -25,6 +24,7 @@ userRouter.get(
 userRouter.post(
   '/:userId/avatar',
   commonMdlwr.checkIsIdValid('userId'),
+  fileMdlwr.checkUploadedAvatar,
   userMdlwr.isUserPresent(),
   userController.uploadAvatar
 );
