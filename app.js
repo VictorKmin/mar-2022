@@ -1,17 +1,19 @@
 const express = require('express');
 const fileUpload = require('express-fileupload');
-require('dotenv').config();
+require('dotenv').config({ path: `./environments/${process.env.NODE_ENV}.env`});
 const mongoose = require('mongoose');
-const morgan = require('morgan');
 
-const { PORT, MONGO_URL } = require('./configs/config');
+const { PORT, MONGO_URL, NODE_ENV } = require('./configs/config');
 const runCronJobs = require('./cron');
 const { authRouter, carRouter, userRouter } = require('./routes');
 const { mainErrorHandler } = require('./errors');
 
 const app = express();
 
-app.use(morgan('dev'));
+if (NODE_ENV !== 'production') {
+  const morgan = require('morgan');
+  app.use(morgan('dev'));
+}
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
