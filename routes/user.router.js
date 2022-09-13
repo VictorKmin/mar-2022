@@ -21,12 +21,27 @@ userRouter.get(
   userController.getUserById
 );
 
+userRouter.get(
+  '/:userId/avatar',
+  commonMdlwr.checkIsIdValid('userId'),
+  userMdlwr.isUserPresent(),
+  userController.getImages
+);
+
 userRouter.post(
   '/:userId/avatar',
   commonMdlwr.checkIsIdValid('userId'),
   fileMdlwr.checkUploadedAvatar,
   userMdlwr.isUserPresent(),
   userController.uploadAvatar
+);
+
+userRouter.delete(
+  '/:userId/avatar/:imageId',
+  commonMdlwr.checkIsIdValid('userId'),
+  commonMdlwr.checkIsIdValid('imageId'),
+  userMdlwr.isUserPresent(),
+  userController.deleteImages
 );
 
 userRouter.put(

@@ -2,7 +2,7 @@ const S3 = require('aws-sdk/clients/s3');
 const uuid = require('uuid');
 // const path = require('path');
 
-const { S3_BUCKET_REGION, S3_ACCESS_KEY, S3_SECRET_KEY, S3_BUCKET_NAME } = require('../configs/config');
+const { S3_BUCKET_URL, S3_BUCKET_REGION, S3_ACCESS_KEY, S3_SECRET_KEY, S3_BUCKET_NAME } = require('../configs/config');
 
 const S3Bucket = new S3({
   region: S3_BUCKET_REGION,
@@ -24,6 +24,16 @@ const uploadPublicFile = (file = {}, itemType = '', itemId = '') => {
     .promise(); // TODO DONT FORGET @@
 };
 
+const deleteFile = (url) => {
+  const path = url.split(S3_BUCKET_URL).pop();
+  return S3Bucket
+    .deleteObject({
+      Bucket: S3_BUCKET_NAME,
+      Key: path,
+    })
+    .promise();
+};
+
 
 function generateFileName(fileName = '', itemType, itemId) {
   const extension = fileName.split('.').pop(); // image.jpg => jpg
@@ -33,5 +43,6 @@ function generateFileName(fileName = '', itemType, itemId) {
 }
 
 module.exports = {
-  uploadPublicFile
+  deleteFile,
+  uploadPublicFile,
 };
