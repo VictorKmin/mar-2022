@@ -2,6 +2,8 @@ const http = require('http');
 const express = require('express');
 const socketIo = require('socket.io');
 const fileUpload = require('express-fileupload');
+const swaggerUi = require('swagger-ui-express');
+
 require('dotenv').config({ path: `./environments/${process.env.NODE_ENV}.env`});
 const mongoose = require('mongoose');
 
@@ -10,6 +12,7 @@ const runCronJobs = require('./cron');
 const { authRouter, carRouter, userRouter } = require('./routes');
 const { mainErrorHandler } = require('./errors');
 const { userJoinRoom } = require('./controllers/socket');
+const swaggerDocument = require('./swagger.json');
 
 const app = express();
 const server = http.createServer(app);
@@ -54,6 +57,7 @@ app.use('/cars', carRouter);
 app.use('/users', userRouter);
 
 app.get('/health', (req, res) => res.json('OK'));
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use('*', (req, res, next) => {
   next(new Error('Route not fount'));

@@ -1,0 +1,171 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "",
+    "title": "Mar-2022 doc",
+    "contact": {
+      "email": "",
+      "name": "Viktor"
+    }
+  },
+  "paths": {
+    "/users/{userId}": {
+      "get": {
+        "description": "Get user by ID",
+        "tags": [
+          "User"
+        ],
+        "operationId": "get-user",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "default": "mongo-id-example"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get one user by ID",
+            "schema": {
+              "$ref": "#/definitions/SingleUser"
+            }
+          },
+          "400": {
+            "description": "Bad reauest",
+            "schema": {
+              "$ref": "#/definitions/SingleUser"
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete-user",
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/users": {
+      "post": {
+        "description": "Create user",
+        "tags": [
+          "User"
+        ],
+        "operationId": "create-user",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "formData",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "age",
+            "in": "formData",
+            "type": "integer",
+            "required": false,
+            "minimum": 0,
+            "maximum": 120
+          },
+          {
+            "name": "email",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "It will be trimmed and lowercased"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "User password. Minimum 8 symbols",
+            "default": "P@ssw0rd"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User was created",
+            "schema": {
+              "$ref": "#/definitions/SingleUser"
+            }
+          },
+          "400": {
+            "description": "Bad reauest",
+            "schema": {
+              "$ref": "#/definitions/SingleUser"
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "Get all users",
+        "tags": [
+          "User"
+        ],
+        "operationId": "get-users",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/SingleUser"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad reauest",
+            "schema": {
+              "$ref": "#/definitions/SingleUser"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "ApiError": {
+      "properties": {
+        "status": {
+          "type": "integer",
+          "description": "Status code",
+          "example": 400
+        },
+        "message": {
+          "type": "string",
+          "description": "Error message",
+          "example": "Something went wrong"
+        }
+      }
+    },
+    "SingleUser": {
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "John"
+        },
+        "age": {
+          "type": "integer",
+          "example": 20
+        },
+        "email": {
+          "type": "string",
+          "example": "john.doe@example.com"
+        }
+      }
+    }
+  }
+}

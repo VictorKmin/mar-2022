@@ -8,7 +8,8 @@
     "start:prod": "NODE_ENV=production node app.js",
     "start:dev": "NODE_ENV=development nodemon app.js",
     "start:local": "NODE_ENV=local nodemon app.js",
-    "lint": "eslint --fix --ext .js ."
+    "lint": "eslint --fix --ext .js .",
+    "dev" : "pm2 start app.js --watch --name mainServer --attach"
   },
   "repository": {
     "type": "git",
@@ -36,6 +37,7 @@
     "nodemailer": "^6.7.8",
     "pug": "^3.0.2",
     "socket.io": "^4.5.2",
+    "swagger-ui-express": "^4.5.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

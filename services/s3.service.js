@@ -24,6 +24,11 @@ const uploadPublicFile = (file = {}, itemType = '', itemId = '') => {
     .promise(); // TODO DONT FORGET @@
 };
 
+/**
+ * This is function
+ * @param url - image url. Exmpale: http://image.com/photo.jpg
+ * @returns {Promise<PromiseResult<S3.DeleteObjectOutput, AWSError>>}
+ */
 const deleteFile = (url) => {
   const path = url.split(S3_BUCKET_URL).pop();
   return S3Bucket
